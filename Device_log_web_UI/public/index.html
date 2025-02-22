@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IoT Smart Alarm Logs</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background: #f4f4f4; }
+        h2 { color: #333; }
+        table { width: 80%; margin: 20px auto; border-collapse: collapse; background: #fff; }
+        th, td { padding: 10px; border: 1px solid #ddd; }
+        th { background: #007bff; color: white; }
+    </style>
+</head>
+<body>
+    <h2>IoT Smart Alarm Logs</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Event Name</th>
+                <th>Meeting Time</th>
+                <th>Adjusted Alarm</th>
+                <th>Status</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody id="logsTable">
+        </tbody>
+    </table>
+
+    <script>
+        // 🔹 Replace with your Firebase config
+const firebaseConfig = {
+  apiKey: "****************************",
+  authDomain: "iotsmartalarm.firebaseapp.com",
+  databaseURL: "https://iotsmartalarm-default-rtdb.firebaseio.com",
+  projectId: "iotsmartalarm",
+  storageBucket: "iotsmartalarm.firebasestorage.app",
+  messagingSenderId: "573957250166",
+  appId: "*******************************",
+  measurementId: "G-YPC5MPDD5F"
+};
+
+        // 🔹 Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+
+        // 🔹 Fetch Data from Firebase Realtime Database
+        function fetchLogs() {
+            const logsTable = document.getElementById("logsTable");
+            logsTable.innerHTML = ""; // Clear previous data
+
+            database.ref("alarm_logs").on("value", (snapshot) => {
+                logsTable.innerHTML = ""; // Clear before adding new data
+                snapshot.forEach((childSnapshot) => {
+                    const log = childSnapshot.val();
+                    const row = `<tr>
+                        <td>${log.event_name || "Unknown"}</td>
+                        <td>${log.event_time || "N/A"}</td>
+                        <td>${log.adjusted_alarm_time || "N/A"}</td>
+                        <td>${log.status || "N/A"}</td>
+                        <td>${log.timestamp || "N/A"}</td>
+                    </tr>`;
+                    logsTable.innerHTML += row;
+                });
+            });
+        }
+
+        // 🔹 Load logs when the page loads
+        fetchLogs();
+    </script>
+</body>
+</html>
