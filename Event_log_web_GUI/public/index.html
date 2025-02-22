@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Logs Dashboard</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background: #f4f4f4; }
+        h2 { color: #333; }
+        table { width: 90%; margin: 20px auto; border-collapse: collapse; background: #fff; }
+        th, td { padding: 10px; border: 1px solid #ddd; text-align: center; }
+        th { background: #007bff; color: white; }
+        tr:nth-child(even) { background: #f2f2f2; }
+    </style>
+</head>
+<body>
+
+    <h2>🚀 Events update from Firebase</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Event Name</th>
+                <th>Event Time</th>
+                <th>Location</th>
+                <th>Weather</th>
+                <th>Temperature</th>
+                <th>Base Travel Time</th>
+                <th>Adjusted Travel Time</th>
+                <th>Notification Time</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody id="logsTable"></tbody>
+    </table>
+
+    <script>
+        // 🔹 Replace with your Firebase Config
+        const firebaseConfig = {
+        apiKey: "**********************",
+        authDomain: "travelschedule-453a2.firebaseapp.com",
+        databaseURL: "https://travelschedule-453a2-default-rtdb.firebaseio.com",
+        projectId: "travelschedule-453a2",
+        storageBucket: "travelschedule-453a2.firebasestorage.app",
+        messagingSenderId: "978212094658",
+        appId: "******************************",
+        measurementId: "G-Z3552B6B5D"
+};
+
+        // 🔹 Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database().ref("travel_logs");
+
+        // 🔹 Fetch Data and Display in Table
+        function fetchLogs() {
+            const logsTable = document.getElementById("logsTable");
+            logsTable.innerHTML = ""; // Clear previous data
+
+            database.on("value", (snapshot) => {
+                logsTable.innerHTML = ""; // 
+                snapshot.forEach((childSnapshot) => {
+                    const log = childSnapshot.val();
+                    const row = `<tr>
+                        <td>${log.event_name || "Unknown"}</td>
+                        <td>${log.event_time || "N/A"}</td>
+                        <td>${log.location || "N/A"}</td>
+                        <td>${log.weather || "N/A"}</td>
+                        <td>${log.temperature || "N/A"}°C</td>
+                        <td>${log.base_travel_time || "N/A"}</td>
+                        <td>${log.adjusted_travel_time || "N/A"} mins</td>
+                        <td>${log.notification_time || "N/A"}</td>
+                        <td>${log.timestamp || "N/A"}</td>
+                    </tr>`;
+                    logsTable.innerHTML += row;
+                });
+            });
+        }
+
+        // 🔹 Load logs when the page loads
+        fetchLogs();
+    </script>
+
+</body>
+</html>
