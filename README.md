@@ -65,15 +65,4 @@ The **IoT Smart Alarm Clock** successfully integrates **Google Calendar, real-ti
 - 🏙 **Public Transport Integration** for smarter travel time adjustments.  
 - ⏳ **Sleep Tracking** for optimizing wake-up phases.  
 
----
 
-🔗 **Project Repository:** https://github.com/Amitgit01/DIOT_final_project.git 
-
-🚀 **Developed by:** 
-Amit Chaurasiya,
-Anjali Ravikumar,
-Bhethala Vamsi,
-Sejal Sawant,
-Spandan Divate 
-
-📅 **Date:** 10 Feb, 2025
